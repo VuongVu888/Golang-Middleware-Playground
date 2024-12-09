@@ -1,17 +1,17 @@
 {
 	"name": "Go",
-	"image": "mcr.microsoft.com/devcontainers/base:bookworm",,
+	"image": "mcr.microsoft.com/devcontainers/base:bookworm",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
 	  "ghcr.io/devcontainers/features/go:1": {
           "version": "1.23.3"
-      },
+      }
 	},
 
 	"runArgs": [
-      "--device=/dev/net/tun"
-  ]
+        "--device=/dev/net/tun"
+    ],
 
 	"customizations": {
       "codespaces": {
@@ -22,8 +22,8 @@
               "shardulm94.trailing-spaces",
               "golang.go",
               "hashicorp.terraform",
-              "ms-vscode.makefile-tools",
-          ],
+              "ms-vscode.makefile-tools"
+          ]
       }
   },
 	"forwardPorts": [9000],

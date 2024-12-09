@@ -9,13 +9,10 @@ import (
 	"playground/middleware/middleware/common"
 )
 
-type (
-	CHandlerFunc func(w http.ResponseWriter, req *http.Request) error
-	Middleware   interface {
-		FirstMiddleware(handler CHandlerFunc) CHandlerFunc
-		SecondMiddleware(handler CHandlerFunc) CHandlerFunc
-	}
-)
+type Middleware interface {
+	FirstMiddleware(handler common.HandlerWithError) common.HandlerWithError
+	SecondMiddleware(handler common.HandlerWithError) common.HandlerWithError
+}
 
 type middleware struct {
 	logger *log.Logger
@@ -27,8 +24,8 @@ func NewMiddleware(logger *log.Logger) *middleware {
 	}
 }
 
-func (m *middleware) FirstChainingMiddleware(handler CHandlerFunc) CHandlerFunc {
-	return CHandlerFunc(func(w http.ResponseWriter, req *http.Request) error {
+func (m *middleware) FirstChainingMiddleware(handler common.HandlerWithError) common.HandlerWithError {
+	return common.HandlerWithError(func(w http.ResponseWriter, req *http.Request) error {
 		wrapper := common.NewResponseWriter(w)
 
 		if err := handler(wrapper, req); err != nil {
@@ -52,8 +49,8 @@ func (m *middleware) FirstChainingMiddleware(handler CHandlerFunc) CHandlerFunc 
 	})
 }
 
-func (m *middleware) SecondChainingMiddleware(handler CHandlerFunc) CHandlerFunc {
-	return CHandlerFunc(func(w http.ResponseWriter, req *http.Request) error {
+func (m *middleware) SecondChainingMiddleware(handler common.HandlerWithError) common.HandlerWithError {
+	return common.HandlerWithError(func(w http.ResponseWriter, req *http.Request) error {
 		wrapper := common.NewResponseWriter(w)
 
 		if err := handler(wrapper, req); err != nil {
