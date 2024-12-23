@@ -1,11 +1,15 @@
 package middleware
 
-import "net/http"
+import (
+	"net/http"
 
-type Option func(CHandlerFunc) CHandlerFunc
+	"playground/middleware/middleware/common"
+)
 
-func Chain(mw ...Option) func(CHandlerFunc) http.Handler {
-	return func(handler CHandlerFunc) http.Handler {
+type Option func(common.HandlerWithError) common.HandlerWithError
+
+func Chain(mw ...Option) func(common.HandlerWithError) http.Handler {
+	return func(handler common.HandlerWithError) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			next := handler
 			for k := len(mw) - 1; k >= 0; k-- {
